@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 [Table("ArtesanosRP")]
 public class ArtesanoRP
 {
