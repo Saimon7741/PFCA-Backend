@@ -22,9 +22,11 @@ public static class ArtesanoEndpoints
 
         app.MapPut("/api/artesanos/{id:int}", async (int id, Artesano updatedArtesano, AppDbContext db) =>
         {
+            // 1. Buscar el registro real en la DB
             var artesano = await db.Artesanos.FindAsync(id);
-            if (artesano is null) return Results.NotFound();
+            if (artesano is null) return Results.NotFound($"No se encontró el artesano con ID {id}");
 
+            // 2. Mapeo manual (Aseguramos que no se pierdan datos)
             artesano.Cuadrante = updatedArtesano.Cuadrante;
             artesano.Toldo = updatedArtesano.Toldo;
             artesano.DocumentoIdentidad = updatedArtesano.DocumentoIdentidad;
@@ -36,6 +38,7 @@ public static class ArtesanoEndpoints
             artesano.Telefono = updatedArtesano.Telefono;
             artesano.Observaciones = updatedArtesano.Observaciones;
             
+            // Meses
             artesano.Enero = updatedArtesano.Enero;
             artesano.Febrero = updatedArtesano.Febrero;
             artesano.Marzo = updatedArtesano.Marzo;
@@ -50,9 +53,18 @@ public static class ArtesanoEndpoints
             artesano.Diciembre = updatedArtesano.Diciembre;
             
             artesano.CalcularTotalParticipaciones();
-            
-            await db.SaveChangesAsync();
-            return Results.NoContent();
+
+            try 
+            {
+                await db.SaveChangesAsync();
+                return Results.NoContent();
+            }
+            catch (Exception ex)
+            {
+                // Esto evita que el error bloquee futuras peticiones
+                Console.WriteLine($"Error al actualizar ID {id}: {ex.Message}");
+                return Results.Problem("Error al guardar en base de datos. Verifique los formatos de fecha o campos obligatorios.");
+            }
         });
 
         app.MapDelete("/api/artesanos/{id:int}", async (int id, AppDbContext db) =>
