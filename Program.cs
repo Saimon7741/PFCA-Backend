@@ -1,7 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
+using Microsoft.OpenApi.Models; // Necesario para Swagger
 
 var builder = WebApplication.CreateBuilder(args);
+
+// --- SERVICIOS ---
 
 // 1. Configurar JSON
 builder.Services.AddControllers().AddJsonOptions(options =>
@@ -9,37 +12,55 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
 });
 
-// 2. Configuración de CORS (Ajustado para producción)
+// 2. NUEVO: Registrar Swagger (Faltaba esto)
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "API Artesanos", Version = "v1" });
+});
+
+// 3. Configuración de CORS
 builder.Services.AddCors(options => 
     options.AddDefaultPolicy(policy => 
-        policy.AllowAnyOrigin() // En el futuro cambia esto por la URL de tu Vercel
+        policy.AllowAnyOrigin() 
               .AllowAnyMethod()
               .AllowAnyHeader()));
 
-// 3. Conexión a Supabase (PostgreSQL)
-// Busca la conexión en appsettings.json
+// 4. Conexión a Supabase
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
 builder.Services.AddDbContext<AppDbContext>(options => 
     options.UseNpgsql(connectionString));
 
 var app = builder.Build();
 
+// --- MIDDLEWARE ---
+
 app.UseCors();
 
-// --- INICIALIZACIÓN DE BASE DE DATOS (MÉTODO SUPABASE/POSTGRES) ---
+// Siempre habilitar Swagger (Incluso en producción/Render)
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "API Artesanos v1");
+    c.RoutePrefix = string.Empty; // Swagger en la raíz: https://tu-app.onrender.com/
+});
+
+// --- VERIFICACIÓN DE CONEXIÓN ---
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    // Solo verificamos la conexión, ya no intentamos crear ni borrar desde aquí
     try {
-        db.Database.CanConnect();
-        Console.WriteLine("🚀 Conexión exitosa con Supabase");
+        if (db.Database.CanConnect()) {
+            Console.WriteLine("🚀 Conexión exitosa con Supabase");
+        }
     } catch (Exception ex) {
         Console.WriteLine($"❌ Error de conexión: {ex.Message}");
     }
 }
-// --- ENDPOINTS DE AUTENTICACIÓN ---
+
+// --- ENDPOINTS ---
+
+// Login
 app.MapPost("/api/login", async (LoginRequest login, AppDbContext db) =>
 {
     var user = await db.Usuarios
@@ -58,16 +79,13 @@ app.MapPost("/api/login", async (LoginRequest login, AppDbContext db) =>
     });
 });
 
-app.UseSwagger();
-app.UseSwaggerUI(c =>
-{
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "API Artesanos v1");
-    c.RoutePrefix = string.Empty; // Esto hace que Swagger cargue en la raíz
-});
-
+// Map de tus otros archivos
 app.MapArtesanoEndpoints();
 app.MapArtesanoSitiEndpoints();
 app.MapArtesanoCNEndpoints();
 app.MapArtesanoRPEndpoints();
 
 app.Run();
+
+// Clase auxiliar para el login (asegúrate de que esté aquí o en sus archivos)
+public record LoginRequest(string Usuario, string Contrasena);
