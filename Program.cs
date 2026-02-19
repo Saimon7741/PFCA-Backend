@@ -86,6 +86,3 @@ app.MapArtesanoCNEndpoints();
 app.MapArtesanoRPEndpoints();
 
 app.Run();
-
-// Clase auxiliar para el login (asegúrate de que esté aquí o en sus archivos)
-public record LoginRequest(string Usuario, string Contrasena);
