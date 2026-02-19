@@ -1,42 +1,37 @@
-using System;
-
+[Table("ArtesanosSiti")]
 public class ArtesanoSiti
 {
-    public int Id { get; set; }
-    public DateTime? FechaIngreso { get; set; }
-    public string? TipoIdentificacion { get; set; }
-    public string? DocumentoIdentidad { get; set; }
-    public string? Nombre { get; set; }
-    public string? Producto { get; set; }
-    public string? Marca { get; set; }
-    public string? Telefono { get; set; }
-    public string? Correo { get; set; }
-    public string? Sexo { get; set; }
-    public DateTime? FechaNacimiento { get; set; }
-    public string? Observaciones { get; set; }
-    
-    public bool Enero { get; set; }
-    public bool Febrero { get; set; }
-    public bool Marzo { get; set; }
-    public bool Abril { get; set; }
-    public bool Mayo { get; set; }
-    public bool Junio { get; set; }
-    public bool Julio { get; set; }
-    public bool Agosto { get; set; }
-    public bool Septiembre { get; set; }
-    public bool Octubre { get; set; }
-    public bool Noviembre { get; set; }
-    public bool Diciembre { get; set; }
-    
-    public int TotalParticipaciones { get; set; }
+    [Column("Id")] public int Id { get; set; }
+    [Column("FechaIngreso")] public DateTime? FechaIngreso { get; set; }
+    [Column("TipoIdentificacion")] public string? TipoIdentificacion { get; set; }
+    [Column("DocumentoIdentidad")] public string? DocumentoIdentidad { get; set; }
+    [Column("Nombre")] public string? Nombre { get; set; }
+    [Column("Producto")] public string? Producto { get; set; }
+    [Column("Marca")] public string? Marca { get; set; }
+    [Column("Telefono")] public string? Telefono { get; set; }
+    [Column("Correo")] public string? Correo { get; set; }
+    [Column("Sexo")] public string? Sexo { get; set; }
+    [Column("FechaNacimiento")] public DateTime? FechaNacimiento { get; set; }
+    [Column("Observaciones")] public string? Observaciones { get; set; }
+    [Column("Enero")] public bool Enero { get; set; }
+    [Column("Febrero")] public bool Febrero { get; set; }
+    [Column("Marzo")] public bool Marzo { get; set; }
+    [Column("Abril")] public bool Abril { get; set; }
+    [Column("Mayo")] public bool Mayo { get; set; }
+    [Column("Junio")] public bool Junio { get; set; }
+    [Column("Julio")] public bool Julio { get; set; }
+    [Column("Agosto")] public bool Agosto { get; set; }
+    [Column("Septiembre")] public bool Septiembre { get; set; }
+    [Column("Octubre")] public bool Octubre { get; set; }
+    [Column("Noviembre")] public bool Noviembre { get; set; }
+    [Column("Diciembre")] public bool Diciembre { get; set; }
+    [Column("TotalParticipaciones")] public int TotalParticipaciones { get; set; }
 
-    public void CalcularTotalParticipaciones()
+        public void CalcularTotalParticipaciones()
     {
-        TotalParticipaciones = (Enero ? 1 : 0) + (Febrero ? 1 : 0) + 
-                         (Marzo ? 1 : 0) + (Abril ? 1 : 0) + 
-                         (Mayo ? 1 : 0) + (Junio ? 1 : 0) + 
-                         (Julio ? 1 : 0) + (Agosto ? 1 : 0) +
-                         (Septiembre ? 1 : 0) + (Octubre ? 1 : 0) + 
-                         (Noviembre ? 1 : 0) + (Diciembre ? 1 : 0);
+        TotalParticipaciones = (Enero ? 1 : 0) + (Febrero ? 1 : 0) + (Marzo ? 1 : 0) + 
+                               (Abril ? 1 : 0) + (Mayo ? 1 : 0) + (Junio ? 1 : 0) + 
+                               (Julio ? 1 : 0) + (Agosto ? 1 : 0) + (Septiembre ? 1 : 0) + 
+                               (Octubre ? 1 : 0) + (Noviembre ? 1 : 0) + (Diciembre ? 1 : 0);
     }
 }

@@ -1,22 +1,13 @@
-using System;
-
+[Table("ArtesanosRP")]
 public class ArtesanoRP
 {
-    public int Id { get; set; }
-    
-    public DateTime FechaRevision { get; set; }
-    
-    public string? TipoDocumento { get; set; }
-    
-    public string? NumeroDocumento { get; set; }
-    
-    public string? Nombre { get; set; }
-    
-    public string? Taller { get; set; }
-    
-    public double PuntajeTotal { get; set; }
-    
-    public string? Resultado { get; set; }
-
-    public string? Link { get; set; }
+    [Column("Id")] public int Id { get; set; }
+    [Column("FechaRevision")] public DateTime FechaRevision { get; set; } // Sin ? porque es NOT NULL
+    [Column("TipoDocumento")] public string? TipoDocumento { get; set; }
+    [Column("NumeroDocumento")] public string? NumeroDocumento { get; set; }
+    [Column("Nombre")] public string? Nombre { get; set; }
+    [Column("Taller")] public string? Taller { get; set; }
+    [Column("PuntajeTotal")] public double PuntajeTotal { get; set; } // Sin ? porque es NOT NULL
+    [Column("Resultado")] public string? Resultado { get; set; }
+    [Column("Link")] public string? Link { get; set; }
 }

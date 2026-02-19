@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using Microsoft.OpenApi.Models; // Necesario para Swagger
 
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 var builder = WebApplication.CreateBuilder(args);
 
 // --- SERVICIOS ---
