@@ -58,6 +58,13 @@ app.MapPost("/api/login", async (LoginRequest login, AppDbContext db) =>
     });
 });
 
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "API Artesanos v1");
+    c.RoutePrefix = string.Empty; // Esto hace que Swagger cargue en la raíz
+});
+
 app.MapArtesanoEndpoints();
 app.MapArtesanoSitiEndpoints();
 app.MapArtesanoCNEndpoints();
