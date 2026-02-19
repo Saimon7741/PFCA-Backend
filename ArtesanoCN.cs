@@ -31,7 +31,7 @@ public class ArtesanoCN
     [Column("Total")] // En tu SQL se llama Total
     public int Total { get; set; }
 
-        public void CalcularTotalParticipaciones()
+        public void CalcularTotal()
     {
         Total = (Enero ? 1 : 0) + (Febrero ? 1 : 0) + (Marzo ? 1 : 0) + 
                                (Abril ? 1 : 0) + (Mayo ? 1 : 0) + (Junio ? 1 : 0) + 
