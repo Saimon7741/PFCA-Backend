@@ -24,10 +24,10 @@ builder.Services.AddSwaggerGen(c =>
 // 3. Configuración de CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll",
+    options.AddPolicy("AllowFrontend",
         policy =>
         {
-            policy.WithOrigins("https://pfca-frontend.onrender.com/")
+            policy.WithOrigins("https://pfca-frontend.onrender.com")
                   .AllowAnyMethod()
                   .AllowAnyHeader();
         });
@@ -42,7 +42,7 @@ var app = builder.Build();
 
 // --- MIDDLEWARE ---
 
-app.UseCors();
+app.UseCors("AllowFrontend");
 
 // Siempre habilitar Swagger (Incluso en producción/Render)
 app.UseSwagger();
