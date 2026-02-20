@@ -22,11 +22,16 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 // 3. Configuración de CORS
-builder.Services.AddCors(options => 
-    options.AddDefaultPolicy(policy => 
-        policy.AllowAnyOrigin() 
-              .AllowAnyMethod()
-              .AllowAnyHeader()));
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        policy =>
+        {
+            policy.WithOrigins("https://pfca-frontend.onrender.com/")
+                  .AllowAnyMethod()
+                  .AllowAnyHeader();
+        });
+});
 
 // 4. Conexión a Supabase
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
